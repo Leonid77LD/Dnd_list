@@ -1,0 +1,5 @@
+﻿alembic
+asyncpg
+fastapi[all]
+sqlalchemy
+psycopg2
