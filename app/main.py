@@ -22,10 +22,12 @@
 -- Отправиться на поиск приключений (печать /отправка на почту / позвонить и похвастаться родным и близким)
 
 """
-
+import ast
 import uuid
 
 from fastapi import FastAPI
+# from httpx import post, get
+from requests import get
 from sqlalchemy import insert
 
 from app.organizer.dbutils import execute_command_insert
@@ -53,6 +55,15 @@ async def test_sql(name: str):
     await execute_command_insert(stmt)
     return {"status": "success"}
 
+
+@app.get('/dnd5e_test_res')
+def test_dnd_api():
+    res = get('https://www.dnd5eapi.co/api/')
+    print(res.status_code)
+    if res.status_code == 200:
+        content = ast.literal_eval(res.text)
+        print(content)
+    return res.status_code, res.content
 #
 # app.include_router(
 #     fastapi_users.get_auth_router(auth_backend),
