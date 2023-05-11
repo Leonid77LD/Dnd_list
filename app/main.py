@@ -27,15 +27,15 @@ import uuid
 
 from fastapi import FastAPI, Depends, Response
 from fastapi.responses import JSONResponse
-from pydantic import json
+import json
 from requests import get
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.organizer.dbutils import execute_command_insert
 from googletrans import Translator
 
-from app.base_model import test
+from app.base_model import Test
 
 # Start main app
 # Start local app in console "uvicorn app.main:app --reload"
@@ -54,7 +54,7 @@ def test_req():
 @app.get('/test_sql')
 async def test_sql(name: str, session: AsyncSession = Depends(get_async_session)):
 
-    stmt = insert(test).values(test_col=uuid.uuid4(),
+    stmt = insert(Test).values(test_col=uuid.uuid4(),
                                test_name=name)
     await session.execute(stmt)
     await session.commit()
@@ -62,14 +62,27 @@ async def test_sql(name: str, session: AsyncSession = Depends(get_async_session)
 
 
 @app.get('/get_all_classes')
-async def get_all_classes(session: AsyncSession = Depends(get_async_session)):
-    query = select(test).group_by(test.c.test_col)
-    res = await session.execute(query)
-    a = res.all()
-    print(a)
-    print(type(a))
-    res = {'a': a}
-    return JSONResponse(content=res)
+async def get_all_classes(db: AsyncSession = Depends(get_async_session)):
+    stmt = select(Test)
+    res = await db.execute(stmt)
+    res = res.all()
+    print(res)
+    res_list = []
+    for qwe in res:
+        print(qwe)
+        res_list.append(qwe[0].as_dict())
+    # # print(type(res))
+    # for i in res.all():
+    #     print('1', i.items)
+    #     # print(type(i))
+    #     print('*' * 60)
+    # #
+    #
+    # res = json.dumps(
+    #     {
+    #         'a': a
+    #     }, indent=4, default=str)
+    return True, res_list
 
 
 @app.get('/all_classes_5e')
@@ -77,10 +90,10 @@ def test_dnd_api():
     res = get('https://www.dnd5eapi.co/api/classes/')
     print(res.text)
     if res.status_code == 200:
-        content = ast.literal_eval(res.text)
+        content = ast.literal_eval(res.text)  # converting string into dictionary
         print(content)
         for i in content['results']:
-            stmt = insert(test).values(test_col=uuid.uuid4(),
+            stmt = insert(Test).values(test_col=uuid.uuid4(),
                                        test_name=i['name'],
                                        url=i['url']
                                        )
