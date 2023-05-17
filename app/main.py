@@ -36,53 +36,46 @@ from app.organizer.dbutils import execute_command_insert
 from googletrans import Translator
 
 from app.base_model import Test
+from app.apiDndServices.db_table.slclass import Slclass
 
 # Start main app
 # Start local app in console "uvicorn app.main:app --reload"
-from database import get_async_session
+from app.database import get_async_session
+
+
+from app.apiDndServices.controller.slclass import router as slclass_router
 
 app = FastAPI(
     title="DND App"
 )
 
 
-@app.get('/test_req')
-def test_req():
-    return {'mess': 'All good'}
+
+# @app.get('/test_req')
+# def test_req():
+#     return {'mess': 'All good'}
 
 
-@app.get('/test_sql')
-async def test_sql(name: str, session: AsyncSession = Depends(get_async_session)):
+# @app.get('/test_sql')
+# async def test_sql(name: str, session: AsyncSession = Depends(get_async_session)):
+#
+#     stmt = insert(Test).values(test_col=uuid.uuid4(),
+#                                test_name=name)
+#     await session.execute(stmt)
+#     await session.commit()
+#     return True
 
-    stmt = insert(Test).values(test_col=uuid.uuid4(),
-                               test_name=name)
-    await session.execute(stmt)
-    await session.commit()
-    return True
 
-
-@app.get('/get_all_classes')
-async def get_all_classes(db: AsyncSession = Depends(get_async_session)):
-    stmt = select(Test)
-    res = await db.execute(stmt)
-    res = res.all()
-    print(res)
-    res_list = []
-    for qwe in res:
-        print(qwe)
-        res_list.append(qwe[0].as_dict())
-    # # print(type(res))
-    # for i in res.all():
-    #     print('1', i.items)
-    #     # print(type(i))
-    #     print('*' * 60)
-    # #
-    #
-    # res = json.dumps(
-    #     {
-    #         'a': a
-    #     }, indent=4, default=str)
-    return True, res_list
+# @app.get('/get_all_classes')
+# async def get_all_classes(db: AsyncSession = Depends(get_async_session)):
+#     stmt = select(Test)
+#     res = await db.execute(stmt)
+#     res = res.all()
+#     res_list = []
+#     for qwe in res:
+#         print(qwe)
+#         res_list.append(qwe[0].as_dict())
+#     return True, res_list
 
 
 @app.get('/all_classes_5e')
@@ -106,20 +99,9 @@ def test_dnd_api():
 # translate = Translator()
 # resp = translate.translate('cat', 'ru')
 
-# app.include_router(
-#     fastapi_users.get_auth_router(auth_backend),
-#     prefix="/auth",
-#     tags=["Auth"],
-# )
-#
-# app.include_router(
-#     fastapi_users.get_register_router(UserRead, UserCreate),
-#     prefix="/auth",
-#     tags=["Auth"],
-# )
-#
-# app.include_router(router_operation)
-#
+
+app.include_router(slclass_router)
+
 
 # @app.on_event("startup")
 # async def startup_event():

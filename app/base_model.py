@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy import MetaData, Integer, String, UUID, DATE, DateTime, Table, Column
 
-from database import Base
+from app.database import Base
 
 metadata = MetaData()
 
