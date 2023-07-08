@@ -66,16 +66,16 @@ app = FastAPI(
 #     return True
 
 
-# @app.get('/get_all_classes')
-# async def get_all_classes(db: AsyncSession = Depends(get_async_session)):
-#     stmt = select(Test)
-#     res = await db.execute(stmt)
-#     res = res.all()
-#     res_list = []
-#     for qwe in res:
-#         print(qwe)
-#         res_list.append(qwe[0].as_dict())
-#     return True, res_list
+@app.get('/get_all_classes')
+async def get_all_classes(db: AsyncSession = Depends(get_async_session)):
+    stmt = select(Test)
+    res = await db.execute(stmt)
+    res = res.all()
+    res_list = []
+    for qwe in res:
+        print(qwe)
+        res_list.append(qwe[0].as_dict())
+    return True, res_list
 
 
 @app.get('/all_classes_5e')

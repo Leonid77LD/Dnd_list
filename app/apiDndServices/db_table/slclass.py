@@ -1,8 +1,9 @@
 import uuid
 
 from sqlalchemy import MetaData, Integer, String, UUID, DATE, DateTime, Table, Column
+from sqlalchemy.orm import declarative_base, DeclarativeMeta
 
-from app.database import Base
+Base: DeclarativeMeta = declarative_base()
 
 
 class Slclass(Base):

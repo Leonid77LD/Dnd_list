@@ -1,7 +1,7 @@
 ﻿alembic
 asyncpg
 fastapi[all]
-sqlalchemy
+SQLAlchemy
 psycopg2
 googletrans==3.1.0a0
 requests

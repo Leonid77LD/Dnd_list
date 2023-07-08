@@ -1,8 +1,8 @@
-"""add table Slclasses
+"""fix alembic useng error
 
-Revision ID: 9d5f8056f0ca
-Revises: 62b2c6eb4283
-Create Date: 2023-05-18 00:56:31.664280
+Revision ID: e46fbb40f3c7
+Revises: 0f6bb09dd310
+Create Date: 2023-05-20 23:30:08.210763
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9d5f8056f0ca'
-down_revision = '62b2c6eb4283'
+revision = 'e46fbb40f3c7'
+down_revision = '0f6bb09dd310'
 branch_labels = None
 depends_on = None
 
